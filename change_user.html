@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Existing User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/AppIcon/favicon/Desktop1totest.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            height: 60px; /* Adjusted height to accommodate the logo */
+        }
+        header img {
+            position: absolute;
+            left: 10px;
+            top: 50%; /* Vertically center the logo */
+            transform: translateY(-50%);
+            height: 40px;
+        }
+        main {
+            text-align: center;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px; /* Adjust as needed */
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        .form-field {
+            text-align: center;
+        }
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 10px;
+            display: inline-block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <img src="https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/Logo/PNG/MunuLogoText-Blue-250x.png" alt="Company Logo">
+        <strong>Change Existing User</strong>
+        <button onclick="window.location.href = 'create_user.html';">Add New User</button>
+    </header>
+    <main>
+        <input type="text" id="searchBox" placeholder="Look for employees...">
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>RFID</th>
+                </tr>
+            </thead>
+            <tbody id="userList">
+                <!-- User data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dummy data for demonstration
+            const users = [
+                { firstName: 'John', lastName: 'Doe', phone: '1234567890', email: 'john.doe@example.com', rfid: '12345' },
+                { firstName: 'Jane', lastName: 'Smith', phone: '9876543210', email: 'jane.smith@example.com', rfid: '54321' },
+                { firstName: 'Michael', lastName: 'Johnson', phone: '4567890123', email: 'michael.johnson@example.com', rfid: '67890' }
+            ];
+
+            const searchBox = document.getElementById('searchBox');
+            const userList = document.getElementById('userList');
+
+            // Function to render users
+            function renderUsers(users) {
+                userList.innerHTML = '';
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.firstName} ${user.lastName}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.email}</td>
+                        <td>${user.rfid}</td>
+                    `;
+                    row.onclick = () => editUser(user);
+                    userList.appendChild(row);
+                });
+            }
+
+            // Initial render
+            renderUsers(users);
+
+            // Search functionality
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const filteredUsers = users.filter(user =>
+                    user.firstName.toLowerCase().includes(searchTerm) ||
+                    user.lastName.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.rfid.toLowerCase().includes(searchTerm)
+                );
+                renderUsers(filteredUsers);
+            });
+
+            // Function to navigate to edit_user.html with user data
+            function editUser(user) {
+                const queryParams = `?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}`;
+                window.location.href = `edit_user.html${queryParams}`;
+            }
+        });
+    </script>
+</body>
+</html>

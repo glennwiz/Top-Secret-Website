@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company User Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/AppIcon/favicon/Desktop1totest.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            height: 60px; /* Adjusted height to accommodate the logo */
+        }
+        header img {
+            position: absolute;
+            left: 10px;
+            top: 50%; /* Vertically center the logo */
+            transform: translateY(-50%);
+            height: 40px;
+        }
+        main {
+            text-align: center;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px; /* Adjust as needed */
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        .form-field {
+            text-align: center;
+        }
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px; /* Adjusted margin */
+            display: inline-block;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <img src="https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/Logo/PNG/MunuLogoText-Blue-250x.png" alt="Company Logo">
+        <strong>Hi, you are now editing users for <span id="companyID"></span></strong>
+    </header>
+    <main>
+        <button onclick="window.location.href='create_user.html?companyID=' + getCompanyID()">Create New User</button>
+</br>
+        <button onclick="window.location.href='change_user.html?companyID=' + getCompanyID()">Change Existing User</button>
+    </main>
+
+    <script>
+        // JavaScript to extract companyID from the URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const companyID = urlParams.get('companyID');
+            document.getElementById('companyID').textContent = companyID ? companyID : 'unknown';
+        };
+
+        // Function to get companyID from the URL
+        function getCompanyID() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('companyID') || 'unknown';
+        }
+    </script>
+</body>
+</html>

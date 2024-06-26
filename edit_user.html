@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/AppIcon/favicon/Desktop1totest.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            height: 60px; /* Adjusted height to accommodate the logo */
+        }
+        header img {
+            position: absolute;
+            left: 10px;
+            top: 50%; /* Vertically center the logo */
+            transform: translateY(-50%);
+            height: 40px;
+        }
+        main {
+            text-align: center;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px; /* Adjust as needed */
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        .form-field {
+            text-align: center;
+        }
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <img src="https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/Logo/PNG/MunuLogoText-Blue-250x.png" alt="Company Logo">
+        <strong>You are now editing user:</strong> <span id="userName"></span>
+    </header>
+    <main>
+        <form id="userForm">
+            <div class="form-field">
+                <input type="text" id="firstName" placeholder="First name" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="lastName" placeholder="Last name" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="mobile" placeholder="tex 4712345678" required>
+            </div>
+            <div class="form-field">
+                <input type="email" id="email" placeholder="e-post" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="rfid" placeholder="RFID">
+            </div>
+            <div class="form-field">
+                <button type="submit">Submit</button>
+                <button type="button" id="goBackButton">Go back</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Extract first name and last name from URL
+        const firstName = getUrlParameter('firstName');
+        const lastName = getUrlParameter('lastName');
+
+        // Populate form fields with extracted values
+        document.getElementById('firstName').value = firstName;
+        document.getElementById('lastName').value = lastName;
+
+        // Dummy values for demonstration, replace with actual data retrieval logic
+        document.getElementById('mobile').value = '4712345678';
+        document.getElementById('email').value = 'john.doe@example.com';
+        document.getElementById('rfid').value = '12345';
+
+        // Event listener for form submission (dummy alert for demonstration)
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Form submitted successfully!');
+            // Add your form submission logic here
+        });
+
+        // Event listener for go back button
+        document.getElementById('goBackButton').addEventListener('click', function() {
+            window.location.href = 'change_user.html'; // Replace with your actual page URL
+        });
+    </script>
+</body>
+</html>

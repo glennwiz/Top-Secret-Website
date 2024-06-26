@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New User</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/AppIcon/favicon/Desktop1totest.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+            height: 60px; /* Adjusted height to accommodate the logo */
+        }
+        header img {
+            position: absolute;
+            left: 10px;
+            top: 50%; /* Vertically center the logo */
+            transform: translateY(-50%);
+            height: 40px;
+        }
+        main {
+            text-align: center;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px; /* Adjust as needed */
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        .form-field {
+            text-align: center;
+        }
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 10px;
+            display: inline-block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+         }
+        #jsonOutput {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: left;
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <img src="https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/Logo/PNG/MunuLogoText-Blue-250x.png" alt="Company Logo">
+        <strong>You are now creating a new user for <span id="companyID"></span></strong>
+    </header>
+    <main>
+        <form id="userForm">
+            <div class="form-field">
+                <input type="text" id="firstName" placeholder="First name" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="lastName" placeholder="Last name" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="mobile" placeholder="tex 4712345678" required>
+            </div>
+            <div class="form-field">
+                <input type="email" id="email" placeholder="e-post" required>
+            </div>
+            <div class="form-field">
+                <input type="text" id="rfid" placeholder="RFID">
+            </div>
+            <div class="form-field">
+                <button type="button" onclick="handleSubmit()">Submit</button>
+                <button type="button" onclick="window.location.href='index.html?companyID=' + getCompanyID()">Cancel</button>
+            </div>
+        </form>
+        <div id="jsonOutput"></div>
+    </main>
+
+    <script>
+        // JavaScript to extract companyID from the URL
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const companyID = urlParams.get('companyID');
+            document.getElementById('companyID').textContent = companyID ? companyID : 'unknown';
+        };
+
+        // Function to get companyID from the URL
+        function getCompanyID() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('companyID') || 'unknown';
+        }
+
+        function handleSubmit() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const mobile = document.getElementById('mobile').value;
+            const email = document.getElementById('email').value;
+            const rfid = document.getElementById('rfid').value;
+            const companyID = getCompanyID();
+
+            if (!firstName || !lastName || !mobile) {
+                alert('First name, Last name, and Mobile are mandatory.');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const userData = {
+                RFID: rfid,
+                FirstName: firstName,
+                LastName: lastName,
+                MobilePhone: mobile,
+                EmailAddress: email,
+                CompanyId: companyID
+            };
+
+            document.getElementById('jsonOutput').textContent = JSON.stringify(userData, null, 2);
+            document.getElementById('jsonOutput').style.display = 'block';
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+    </script>
+</body>
+</html>
