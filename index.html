@@ -75,16 +75,56 @@
         <strong>Hi, you are now editing users for <span id="companyID"></span></strong>
     </header>
     <main>
+        <input type="text" id="tokenInput" placeholder="Enter your token here">
+        <button onclick="fetchCompanies()">Fetch Companies</button>
         <select id="companySelect" onchange="updateCompanyID()">
             <option value="">Select a company</option>
-            <option value="company1">Company 1</option>
-            <option value="company2">Company 2</option>
-            <option value="company3">Company 3</option>
         </select>
         <button onclick="window.location.href='create_user.html?companyID=' + getCompanyID()">Create New User</button></br>
         <button onclick="window.location.href='change_user.html?companyID=' + getCompanyID()">Change Existing User</button>
     </main>
     <script>
+        // Function to fetch companies and populate the dropdown
+        async function fetchCompanies() {
+            const token = document.getElementById('tokenInput').value;
+            if (!token) {
+                alert('Please enter a token');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://stage.retailsolution.no/ords/posmother/intpay/company', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                const select = document.getElementById('companySelect');
+                
+                // Clear existing options
+                select.innerHTML = '<option value="">Select a company</option>';
+
+                // Populate dropdown with fetched companies
+                data.forEach(company => {
+                    const option = document.createElement('option');
+                    option.value = company.Id;
+                    option.textContent = company.Name;
+                    select.appendChild(option);
+                });
+
+                // Set initial value if companyID is in URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const companyID = urlParams.get('companyID');
+                if (companyID) {
+                    select.value = companyID;
+                    updateCompanyID();
+                }
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+                alert('Error fetching companies. Please check your token and try again.');
+            }
+        }
+
         // Function to update companyID based on dropdown selection
         function updateCompanyID() {
             const select = document.getElementById('companySelect');
@@ -108,9 +148,8 @@
             const urlParams = new URLSearchParams(window.location.search);
             const companyID = urlParams.get('companyID');
             if (companyID) {
-                document.getElementById('companySelect').value = companyID;
+                document.getElementById('companyID').textContent = companyID;
             }
-            document.getElementById('companyID').textContent = companyID ? companyID : 'unknown';
         };
     </script>
 </body>
