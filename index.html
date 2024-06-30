@@ -60,33 +60,58 @@
         .button-container {
             text-align: center;
             margin-bottom: 10px;
+        }select {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 320px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <header id="header">
         <img src="https://ams3.digitaloceanspaces.com/rswebstorage/Munu/MunuLogo/Logo/PNG/MunuLogoText-Blue-250x.png" alt="Company Logo">
-        <strong>Hi, you are now editing users for <span id="companyID"></span></strong> 
+        <strong>Hi, you are now editing users for <span id="companyID"></span></strong>
     </header>
     <main>
-        <button onclick="window.location.href='create_user.html?companyID=' + getCompanyID()">Create New User</button>
-</br>
+        <select id="companySelect" onchange="updateCompanyID()">
+            <option value="">Select a company</option>
+            <option value="company1">Company 1</option>
+            <option value="company2">Company 2</option>
+            <option value="company3">Company 3</option>
+        </select>
+        <button onclick="window.location.href='create_user.html?companyID=' + getCompanyID()">Create New User</button></br>
         <button onclick="window.location.href='change_user.html?companyID=' + getCompanyID()">Change Existing User</button>
     </main>
-
     <script>
-        // JavaScript to extract companyID from the URL
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const companyID = urlParams.get('companyID');
+        // Function to update companyID based on dropdown selection
+        function updateCompanyID() {
+            const select = document.getElementById('companySelect');
+            const companyID = select.value;
             document.getElementById('companyID').textContent = companyID ? companyID : 'unknown';
-        };
+            
+            // Update URL with new companyID
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('companyID', companyID);
+            history.pushState({}, '', newUrl);
+        }
 
         // Function to get companyID from the URL
         function getCompanyID() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('companyID') || 'unknown';
         }
+
+        // Initialize page on load
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const companyID = urlParams.get('companyID');
+            if (companyID) {
+                document.getElementById('companySelect').value = companyID;
+            }
+            document.getElementById('companyID').textContent = companyID ? companyID : 'unknown';
+        };
     </script>
 </body>
 </html>
